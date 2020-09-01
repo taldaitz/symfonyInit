@@ -7,7 +7,7 @@
 
     <!-- CSS only -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="{{ asset( "css/main.css") }}">
 
     {% block childCss %}{% endblock %}
 
@@ -28,9 +28,14 @@
 
     <nav class="container">
         <ul class="nav">
-            <li class="nav-item"><a href="#" class="nav-link">Accueil</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Articles</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Inscription</a></li>
+            <li class="nav-item"><a href="{{ path("accueil") }}" class="nav-link">Accueil</a></li>
+            <li class="nav-item"><a href="{{ path("articles") }}" class="nav-link">Articles</a></li>
+            <li class="nav-item"><a href="{{ path("inscription", {
+                                                "nom" : "Aldaitz", 
+                                                "prenom" : "Thomas", 
+                                                "ville" : "Lyon", 
+                                                "age" : "35", 
+            }) }}" class="nav-link">Inscription</a></li>
         </ul>
     </nav>
 

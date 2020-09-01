@@ -1,0 +1,32 @@
+{% extends "parent.html.twig" %}
+
+{% block content %}
+
+{% if age < 18 %}
+    <p class="rouge">Nom : {{nom}}</p>
+{% else %}
+    <p>Nom : {{nom}}</p>
+{% endif %}
+
+<p>Prénom : {{prenom}}</p>
+<p>Ville : {{ville}}</p>
+<p>Age : {{age}}</p>
+
+{% if ville == "Lyon" %}
+    <p>
+        <img src="{{ asset("images/maire_lyon.jpg") }}" alt="Nouveau Maire de Lyon">
+    </p>
+{% endif %}
+
+{% if ville == "Paris" %}
+    {% for i in 1 .. age %}
+        <p>Bienvenue à Lyon !</p>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}
+
+
+{% block childCss %}
+    <link rel="stylesheet" href="{{ asset( "css/inscription.css") }}">
+{% endblock %}
