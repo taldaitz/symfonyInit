@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -24,16 +25,20 @@ class Article
 
     /**
      * @ORM\Column(type="date")
+     * Assert\LessThan("today")
      */
     private $date;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * Assert\Length(min = 200)
+     * Assert\NotBlank
      */
     private $content;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * Assert\Choice({"publié", "en cours de rédaction", "annulé"})
      */
     private $status;
 

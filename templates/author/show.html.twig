@@ -1,0 +1,26 @@
+{% extends "parent.html.twig" %}
+
+{% block content %}
+
+    <p>Prénom : {{ author.firstname }}</p>
+    <p>Nom : {{ author.lastname }}</p>
+    <p>Date de naissance : {{ author.birthdate }}</p>
+
+    <table class="table">
+        <thead>
+            <th>Titre</th>
+            <th>Date</th>
+            <th>Statut</th>
+        </thead>
+        <tbody>
+            {% for article in author.articles %}
+                <tr>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.date|date('d/m/Y') }}</td>
+                    <td>{{ article.status }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BookRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
@@ -19,16 +20,19 @@ class Book
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $title;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Assert\LessThan("today")
      */
     private $publicationDate;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive
      */
     private $pageNb;
 
@@ -36,6 +40,11 @@ class Book
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $editor;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Genre::class, inversedBy="books")
+     */
+    private $genre;
 
     public function getId(): ?int
     {
@@ -86,6 +95,18 @@ class Book
     public function setEditor(?string $editor): self
     {
         $this->editor = $editor;
+
+        return $this;
+    }
+
+    public function getGenre(): ?Genre
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(?Genre $genre): self
+    {
+        $this->genre = $genre;
 
         return $this;
     }
