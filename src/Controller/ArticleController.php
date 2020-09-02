@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
+use App\Entity\Auteur;
+use App\Repository\ArticleRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
@@ -18,38 +23,10 @@ class ArticleController extends AbstractController
     /**
      * @Route("/articles", name="articles")
      */
-    public function list()
+    public function list(ArticleRepository $articleRepository)
     {
-        $articles = [
-             ['articleTitle'=> 'Titre 1',
-                'articleDate' => '01/09/2020',
-                'articleContent' => 'Cillum qui culpa ad est deserunt quis ad. Minim irure proident eiusmod tempor ut consectetur dolore aliquip tempor nostrud magna incididunt. Commodo est culpa nisi excepteur tempor deserunt velit incididunt eiusmod. Sunt est ad sit sit ut cupidatat sunt voluptate pariatur nisi. Officia eiusmod voluptate est eiusmod consectetur in cillum do commodo exercitation occaecat cillum.
-Dolore officia amet cillum veniam elit irure deserunt occaecat nostrud eiusmod aliqua velit consequat. Sint dolore ea aliqua sit velit eiusmod ullamco exercitation nulla. Magna labore veniam mollit non duis. Et duis est officia anim deserunt elit laborum esse est tempor. Ex reprehenderit incididunt dolor esse fugiat voluptate do laboris id cupidatat. Commodo sint dolor fugiat adipisicing est. Culpa quis esse laboris esse anim eiusmod.
-Est amet ipsum magna ea in laboris consectetur nostrud sint ullamco sit Lorem sit amet. Ullamco veniam occaecat magna fugiat aute in eu in ullamco. Ut laborum esse et id aliquip in magna laboris. Ullamco excepteur veniam quis adipisicing elit occaecat ipsum aliquip eu magna ex ex. Non Lorem nisi nostrud in exercitation. Id excepteur voluptate excepteur do culpa sunt consectetur aute.
-Mollit dolor irure duis sunt magna sunt veniam labore ea mollit minim. Minim voluptate voluptate dolore tempor nisi reprehenderit cupidatat. Magna eiusmod commodo amet ipsum dolor. Proident officia aliqua ex eiusmod. Cillum ex pariatur velit nulla. Ea quis ut labore est consequat veniam aliqua aliquip ad.
-                                                '
-            ],
+        $articles = $articleRepository->findAllPublished();
 
-            ['articleTitle'=> 'Titre 2',
-                'articleDate' => '12/08/2020',
-                'articleContent' => 'Ex anim laborum veniam ea cupidatat mollit laboris ad elit magna ex et est. Officia in incididunt sit Lorem fugiat et proident ad. Nisi velit laboris amet excepteur in Lorem quis cupidatat duis cillum velit ea. Consectetur laboris Lorem et elit non exercitation eu sint nisi. Velit exercitation nulla incididunt cupidatat tempor ad. Adipisicing nostrud eiusmod velit eiusmod qui sunt incididunt et culpa et laboris.
-
-Eu incididunt culpa fugiat non laborum voluptate commodo enim fugiat magna amet. Pariatur nostrud reprehenderit commodo qui in consequat aute sit enim. Laborum voluptate id amet minim sit sunt enim. Qui excepteur sunt dolore cillum. Reprehenderit nostrud adipisicing duis enim. Quis excepteur nisi nulla fugiat minim.
-
-Mollit id incididunt ad esse laboris duis sunt veniam ea laborum eu. Nulla sit pariatur ipsum dolor voluptate elit ullamco cillum cupidatat voluptate. Ipsum ad nulla aliqua enim deserunt. Culpa enim non ea Lorem laborum tempor excepteur consequat aliqua tempor do.'
-            ],
-
-            ['articleTitle'=> 'Titre 3',
-                'articleDate' => '14/07/2020',
-                'articleContent' => 'Laborum occaecat labore consequat do proident adipisicing ut eiusmod ea ad in. Dolor dolor magna laboris anim irure Lorem eiusmod. Quis irure consectetur quis esse irure fugiat est duis adipisicing nisi adipisicing nisi. Ipsum pariatur quis ullamco ut voluptate Lorem anim officia reprehenderit cillum ex nisi dolor sint. Cupidatat anim exercitation quis ullamco excepteur fugiat exercitation cupidatat ea.
-
-Minim eu in ea excepteur consequat nisi labore enim sint quis occaecat. Culpa esse ullamco officia consequat dolor laborum commodo Lorem minim sint proident. Veniam laborum nulla cillum incididunt velit pariatur. Duis quis dolore nulla veniam qui labore minim aute. Deserunt veniam est officia sint mollit Lorem ea excepteur ut sunt ad. Reprehenderit id laborum laboris incididunt quis proident ullamco ea velit cupidatat dolor. Exercitation laborum veniam ad ipsum Lorem cupidatat id aliquip aute ex excepteur labore ipsum labore.
-
-Esse commodo pariatur nisi velit eiusmod quis ipsum deserunt proident enim aliquip ipsum. Culpa officia Lorem pariatur anim elit. Ullamco ex quis commodo deserunt irure dolor ullamco cillum. Ullamco officia proident aliquip pariatur aliqua occaecat nostrud dolor aliqua eu sunt anim. Magna sint Lorem deserunt do officia ut cillum id ipsum amet.
-
-Non magna et sint velit veniam anim mollit ut culpa excepteur officia do est. Do velit sit eiusmod qui. Cupidatat dolore aliqua eiusmod sint aliqua incididunt dolore sit laboris commodo occaecat dolor laborum qui. Consectetur esse in adipisicing eu aliquip qui do ea non culpa. Ullamco ullamco cupidatat ullamco irure dolore proident commodo est. Quis do commodo ea sunt non in incididunt.'
-            ],
-        ];
         return $this->render('article/articles.html.twig', [
             'title' => 'les Articles',
             'articles' => $articles
@@ -68,5 +45,58 @@ Non magna et sint velit veniam anim mollit ut culpa excepteur officia do est. Do
             'ville' => $ville,
             'age' => $age,
         ]);
+    }
+
+    /**
+     * @Route("/Article/populate", name="ArticlePopulate")
+     */
+    public function populate()
+    {
+        $author1 = new Auteur();
+        $author2 = new Auteur();
+
+        $author1->setLastname("Aldaitz")->setFirstname("Thomas");
+        $author2->setLastname("Test")->setFirstname("Jean");
+
+
+        $article1 = new Article();
+        $article1->setTitle("Les chats")
+            ->setDate(new DateTime('2020-04-01'))
+            ->setStatus('publié')
+            ->setWriter($author1)
+            ->setContent("Le Chat domestique (Felis silvestris catus) est la sous-espèce issue de la domestication du Chat sauvage, mammifère carnivore de la famille des Félidés.
+                 Il est l’un des principaux animaux de compagnie et compte aujourd’hui une cinquantaine de races différentes reconnues par les instances de certification. Dans de très nombreux pays, le chat entre dans le cadre de la législation sur les carnivores domestiques à l’instar du chien et du furet. Essentiellement territorial, le chat est un prédateur de petites proies comme les rongeurs ou les oiseaux. Les chats ont diverses vocalisations dont les ronronnements, les miaulements, les feulements ou les grognements, bien qu’ils communiquent principalement par des positions faciales et corporelles et des phéromones."
+                );
+
+        $article2 = new Article();
+        $article2->setTitle("Les chiens")
+            ->setDate(new DateTime('2020-02-12'))
+            ->setStatus('publié')
+            ->setWriter($author2)
+            ->setContent("
+            Le Chien (Canis lupus familiaris) est la sous-espèce domestique de Canis lupus, un mammifère de la famille des Canidés (Canidae), laquelle comprend également le Loup gris et le dingo, chien domestique retourné à l'état sauvage.
+            Le Loup est la première espèce animale à avoir été domestiquée par l'Homme pour l'usage de la chasse dans une société humaine paléolithique qui ne maîtrise alors ni l'agriculture ni l'élevage. La lignée du chien s'est différenciée génétiquement de celle du Loup gris il y a environ 100 000 ans1, et les plus anciens restes confirmés de canidé différencié de la lignée du Loup sont vieux, selon les sources, de 33 000 ans2,3 ou de 12 000 ans4 ; le boeuf5 (voir Domestication de Bos taurus) et la chèvre seront domestiquées vers −10 000. Depuis la Préhistoire, le chien a accompagné l'être humain durant toute sa phase de sédentarisation, marquée par l'apparition des premières civilisations agricoles. C'est à ce moment qu'il a acquis la capacité de digérer l'amidon6, et que ses fonctions d'auxiliaire d'Homo sapiens se sont étendues. Ces nouvelles fonctions ont entraîné une différenciation accrue de la sous-espèce et l'apparition progressive de races canines identifiables. Le chien est aujourd'hui utilisé à la fois comme animal de travail et comme animal de compagnie. Son instinct de meute, sa domestication précoce et les caractéristiques comportementales qui en découlent lui valent familièrement le surnom de « meilleur ami de l'Homme »7.
+                    ");
+
+        $article3 = new Article();
+        $article3->setTitle("Les araignées")
+            ->setStatus('en cours de rédaction')
+            ->setDate(new DateTime('2020-01-17'))
+            ->setWriter($author1)
+            ->setContent("
+            Les araignées ou Aranéides (ordre des Araneae de la classe des Arachnides, à laquelle il a donné son nom) sont des prédateurs invertébrés arthropodes. Comme tous les chélicérates, leur corps est divisé en deux tagmes, le prosome ou céphalothorax (partie antérieure dépourvue de mandibules et d'antennes, dotée de huit pattes) et l’opisthosome ou abdomen qui porte à l'arrière des filières. Elles sécrètent par ces appendices de la soie qui sert à produire le fil qui leur permet de se déplacer, de tisser leur toile ou des cocons emprisonnant leurs proies ou protégeant leurs œufs ou petits, voire de faire une réserve provisoire de sperme ou un dôme leur permettant de stocker de l’air sous l’eau douce. Contrairement aux insectes, elles ne disposent ni d'ailes ni d'antennes ni de pièces masticatrices dans la bouche. Elles possèdent en général six à huit yeux qui peuvent être simples ou multiples. 
+            ");
+
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($author1);
+        $em->persist($author2);
+        $em->persist($article1);
+        $em->persist($article2);
+        $em->persist($article3);
+
+        $em->flush();
+
+        return new Response("Données créées.");
     }
 }

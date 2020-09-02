@@ -3,9 +3,7 @@
 {% block content %}
 
 {% for article in articles %}
-{% include "shared/_article.html.twig" with {'articleTitle': article.articleTitle, 
-                                            'articleDate' : article.articleDate,
-                                            'articleContent' : article.articleContent} %}
+{% include "shared/_article.html.twig" with {'article': article} %}
 {% endfor %}
 
 

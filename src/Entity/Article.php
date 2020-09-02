@@ -32,6 +32,17 @@ class Article
      */
     private $content;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Auteur::class, inversedBy="articles")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $writer;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +80,30 @@ class Article
     public function setContent(?string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getWriter(): ?Auteur
+    {
+        return $this->writer;
+    }
+
+    public function setWriter(?Auteur $writer): self
+    {
+        $this->writer = $writer;
 
         return $this;
     }

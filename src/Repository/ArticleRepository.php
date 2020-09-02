@@ -36,6 +36,23 @@ class ArticleRepository extends ServiceEntityRepository
     }
     */
 
+    /**
+      * @return Article[] Returns an array of published Articles 
+     */
+    public function findAllPublished()
+    {
+        return $this->createQueryBuilder('a')
+            ->join('a.writer', 'w')
+            ->addSelect('w')
+            ->andWhere('a.status = :status')
+            ->setParameter('status', 'publié')
+            ->orderBy('a.date', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
+
     /*
     public function findOneBySomeField($value): ?Article
     {
